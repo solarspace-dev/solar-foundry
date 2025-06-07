@@ -4,6 +4,16 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      no-cache:
+        description: 'Disable Docker build cache?'
+        required: false
+        default: 'false'  # Cache enabled by default
+        type: choice
+        options:
+          - 'false'
+          - 'true'
 
 jobs:
 
@@ -31,3 +41,4 @@ jobs:
           file: .devcontainer/Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
+          no-cache: ${{ github.event.inputs.no-cache == 'true' }}
